@@ -1,0 +1,111 @@
+.adm-tabs-header {
+  background-color: #e7454c;
+}
+
+.adm-tabs-content {
+  color: #000;
+}
+
+.machine-selection {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.adm-stepper {
+  margin: 10px 20px;
+}
+.machine-unit {
+  margin-right: 25px;
+}
+.adm-space {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  margin: 20px 0;
+}
+
+.machine-double {
+  div {
+    display: flex;
+    align-items: center;
+  }
+}
+// .adm-tabs-tab-active {
+//   color: #000;
+// }
+
+.home-title {
+  width: 100%;
+  position: relative;
+  img {
+    width: 100%;
+  }
+  .home-text {
+    position: absolute;
+    top: 58%;
+    left: 76%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: #000;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: '楷体', SimHei, sans-serif;
+    z-index: 1;
+    .text-in {
+      color: #e7454c;
+    }
+  }
+}
+.red-item,.blu-item{
+  display: flex;
+  padding: 0;
+  flex-wrap: wrap;
+
+  .lotteryNumContainer {
+    position: relative;
+    width: 42px;
+    height: 48px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+  }
+  img {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    width: 42px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+    .lotteryNum {
+      height: 48px;
+      font-size: 24px;
+      border-radius: 33px;
+      color: #ffffff;
+      text-align: center;
+      line-height: 48px;
+      z-index: 2;
+      position: relative;
+  }
+  
+}
+.adm-list-item-content-main {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  .lottery-index {
+    height: 48px;
+    font-size: 20px;
+    border-radius: 33px;
+    color: #000;
+    text-align: center;
+    line-height: 48px;
+    z-index: 2;
+    position: relative;
+  }
+}
