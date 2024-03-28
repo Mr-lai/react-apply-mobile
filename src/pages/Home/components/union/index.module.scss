@@ -3,43 +3,4 @@
     display: flex;
     justify-content: space-between;
   }
-  
-}
-.double-red-item,.double-blue-item{
-  display: flex;
-  padding: 0;
-  flex-wrap: wrap;
-
-  .lotteryNumContainer {
-    position: relative;
-    width: 42px;
-    height: 48px;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-  }
-  img {
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    width: 42px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-    .lotteryNum {
-      height: 48px;
-      font-size: 24px;
-      border-radius: 33px;
-      color: #ffffff;
-      text-align: center;
-      line-height: 48px;
-      z-index: 2;
-      position: relative;
-  }
-}
-.title-text {
-  font-size: 18px;
-}
-.double-main {
-  margin-top: 15px;
 }

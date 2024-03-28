@@ -2,62 +2,82 @@
   type Params =[
     number
 ]
-import  {unionRedData,unionBlueData,lottoRedData,lottoBlueData,eightHappy } from './data';
-const handleConventionArr = (killBlueObj, killRedObj, value, radioValue, stepperValue) => { 
-  console.log(killBlueObj, killRedObj, value, radioValue, stepperValue);
+import { unionRedData, unionBlueData, lottoRedData, lottoBlueData, eightHappy } from './data';
+
+const handleConventionArr = (killBlueObj:Array<Params>, killRedObj:Array<Params>, value:string, stepperValue:number) => { 
   const resultData = []
-  if (value === 'union') {
-    const arr = [...new Set([...unionRedData, ...killRedObj])]
-    for (let index = 0; index < arr.length; index++) {
-      if(Number(arr[index])>=34){
-          delete arr[index]
-        }
-    }
-    const arr1 = [...new Set([...unionBlueData, ...killBlueObj])]
-    for (let index = 0; index < arr.length; index++) {
-      if(Number(arr[index])>=17){
-          delete arr1[index]
-        }
-    }
-    if (radioValue === 'rule') {
-      console.log(arr,arr1);
-      
-      for (let index = 0; index < stepperValue; index++) {
+  const arr = [...new Set([...unionRedData, ...killRedObj])]
+  for (let index = 0; index < arr.length; index++) {
+    if(Number(arr[index])>=34){
+        delete arr[index]
+      }
+  }
+  const arr1 = [...new Set([...unionBlueData, ...killBlueObj])]
+  for (let index = 0; index < arr.length; index++) {
+    if(Number(arr[index])>=17){
+        delete arr1[index]
+      }
+  }
+  let i = 1
+  switch (value) {
+    case 'union':
+      while (i<=stepperValue) { 
         resultData.push({
-          red:getRandomArrayElements(arr,6).sort((a,b)=> a-b),
-          blue: getRandomArrayElements(arr1,1).sort((a,b)=> a-b)
+          red:getRandomArrayElements(arr,6),
+          blue: getRandomArrayElements(arr1,1)
         })
+        i++
       }
       return resultData
-    }
+      break;
+      case 'lotto':
+        while (i<=stepperValue) { 
+          resultData.push({
+            red:getRandomArrayElements(arr,5),
+            blue: getRandomArrayElements(arr1,2)
+          })
+          i++
+        }
+        return resultData
+        break;
+    default:
+      break;
   }
 }
-const handleDoubleArr = (killBlueObj, killRedObj, value, radioValue, redDouble, blueDouble) => { 
-  console.log(killBlueObj, killRedObj, value, radioValue, redDouble, blueDouble);
+const handleDoubleArr = (killBlueObj: Array<Params>, killRedObj: Array<Params>, value:string, redDouble:number, blueDouble:number) => { 
   const resultData = []
-  if (value === 'union') {
-    const arr = [...new Set([...unionRedData, ...killRedObj])]
-    for (let index = 0; index < arr.length; index++) {
-      if(Number(arr[index])>=34){
-          delete arr[index]
-        }
-    }
-    const arr1 = [...new Set([...unionBlueData, ...killBlueObj])]
-    for (let index = 0; index < arr.length; index++) {
-      if(Number(arr[index])>=17){
-          delete arr1[index]
-        }
-    }
-    if (radioValue === 'double') {
-        resultData.push({
-          red:getRandomArrayElements(arr,redDouble).sort((a,b)=> a-b),
-          blue: getRandomArrayElements(arr1,blueDouble).sort((a,b)=> a-b)
-        })
-    
-      return resultData
-    }
+  const arr = [...new Set([...unionRedData, ...killRedObj])]
+  for (let index = 0; index < arr.length; index++) {
+    if(Number(arr[index])>=34){
+        delete arr[index]
+      }
   }
-
+  const arr1 = [...new Set([...unionBlueData, ...killBlueObj])]
+  for (let index = 0; index < arr.length; index++) {
+    if(Number(arr[index])>=17){
+        delete arr1[index]
+      }
+  }
+  switch (value) {
+    case 'union':
+      resultData.push({
+        red:getRandomArrayElements(arr,redDouble),
+        blue: getRandomArrayElements(arr1,blueDouble)
+      })
+  
+    return resultData
+      break;
+      case 'lotto':
+        resultData.push({
+          red:getRandomArrayElements(arr,redDouble),
+          blue: getRandomArrayElements(arr1,blueDouble)
+        })
+    return resultData
+      break;
+    default:
+      []
+      break;
+  }
 }
 const getRandomArrayElements = (arr: Array<Params>, count: number) => {
   let i = arr.length
@@ -71,7 +91,7 @@ const getRandomArrayElements = (arr: Array<Params>, count: number) => {
       shuffled[index] = shuffled[i]; 
       shuffled[i] = temp;
   }
-  return shuffled.slice(min);
+  return shuffled.slice(min).sort((a,b)=> a-b);
 }
 
 export {getRandomArrayElements,handleConventionArr,handleDoubleArr}

@@ -1,20 +1,21 @@
-import { Stepper,Button,Radio,Space,List } from 'antd-mobile';
+import { Stepper,Button,Radio,Space } from 'antd-mobile';
 import { useState } from 'react'
 import classNames from 'classnames/bind'
 import style from './index.module.scss';
+// import redCircle from '@/assets/redCircle.png';
+// import blueCircle from '@/assets/blueCircle.png';
 import KillNumber from '../killNumber/index';
-import redCircle from '@/assets/redCircle.png';
-import blueCircle from '@/assets/blueCircle.png';
-import { handleConventionArr ,handleDoubleArr} from '@/hook/index';
+import { handleConventionArr, handleDoubleArr } from '@/hook/index';
+import  RuleModule  from '@/pages/Home/components/numberDial/ruleModule';
+import  DoubleModule from '@/pages/Home/components/numberDial/doubleModule';
 const cla = classNames.bind(style)
+
 const Union = (props) => {
   const [inpValue, setInpValue] = useState('')
   const [inpValue1, setInpValue1] = useState('')
   // 常规注数
   const [stepperValue, setStepperValue] = useState(1)
   const [radioValue, setRadioValue] = useState('rule')
-  const [redDouble,setRedDouble] = useState(6)
-  const [blueDouble, setblueDouble] = useState(1)
   const [lotteryArr, setLotteryArr] = useState([])
   const [killBlueObj, setKillBlueObj] = useState(
     {
@@ -31,12 +32,12 @@ const Union = (props) => {
     }
   )
 
-  const automaticSelection =async (type) => {
+  const automaticSelection =async (type:string) => {
     if (type === 'rule') {
-      const ruleArr = await handleConventionArr(killBlueObj.arr, killRedObj.arr, props.value, radioValue, stepperValue)
+      const ruleArr = await handleConventionArr(killBlueObj.arr, killRedObj.arr, props.value, stepperValue)
      setLotteryArr(ruleArr)
     } else { 
-      const doubleArr = await handleDoubleArr(killBlueObj.arr, killRedObj.arr, props.value, radioValue, redDouble,blueDouble) 
+      const doubleArr = await handleDoubleArr(killBlueObj.arr, killRedObj.arr, props.value, props.redDouble,props.blueDouble) 
       setLotteryArr(doubleArr)
     }
   }
@@ -56,7 +57,7 @@ const Union = (props) => {
           </Space>
       </Radio.Group>
       <KillNumber killObj={killRedObj} inpValue={inpValue} setInpValue={ setInpValue} setKillObj={ setKillRedObj } />
-      <KillNumber killObj={killBlueObj} inpValue={inpValue1} setInpValue={ setInpValue1} setKillObj={ setKillBlueObj } />
+      <KillNumber killObj={killBlueObj} inpValue={inpValue1} setInpValue={setInpValue1} setKillObj={setKillBlueObj} />
     {
         radioValue === 'rule' && <div>
 
@@ -82,43 +83,11 @@ const Union = (props) => {
                         onClick={() => {
                             setLotteryArr([])
                             setStepperValue(1)
-                      }}>清除</Button>
-              </div>
-              <div>
-                {lotteryArr.length>0 && lotteryArr.map((item,index) => { 
-                      return ( 
-                        <List.Item key={`${index}index`}>
-                          <div className='lottery-index'>{index+1 }.</div>
-                          <ul className="red-item">
-                              {item.red.length>0 && item.red.map((items,indexs) => {
-                                return (
-                                  <li className='lotteryNumContainer redLottery' key={indexs+'index'}>
-                                  <img src={redCircle} alt="" />
-                                    <div className="lotteryNum">{ items}</div>
-                                  </li>
-                                )
-                              }) }
-                  
-                          </ul>
-                        <ul className="blu-item">
-                            { item.blue.length > 0 && item.blue.map((items, indexs) => {
-                                return (
-                                  <li className="lotteryNumContainer" key={`${indexs}${items}`}>
-                                  <img src={ blueCircle} alt="" />
-                                    <div className="lotteryNum lotteryNumBlue">{ items}</div>
-                              </li>
-                                )
-                              })
-                          }
-                        </ul>
-                      </List.Item>
-                      )
-                })}
-              </div>
+              }}>清除</Button>
+          </div>
+          <RuleModule lotteryArr={ lotteryArr} />
         </div>
-        
-        
-    }
+      }
     {
        radioValue==='double'  && <div >
         <div>机选复试</div>
@@ -128,9 +97,9 @@ const Union = (props) => {
           <Stepper
           defaultValue={1}
           min={0}
-          value={redDouble }
+          value={props.redDouble }
           onChange={value => {
-            setRedDouble(value)
+            props.setRedDouble(value)
           }}
           />
           <span className='machine-unit'>位</span>
@@ -140,9 +109,9 @@ const Union = (props) => {
             <Stepper
             defaultValue={1}
             min={0}
-            value={blueDouble }
+            value={props.blueDouble }
             onChange={value => {
-              setblueDouble(value)
+              props.setBlueDouble(value)
             }}
             />
             <span className='machine-unit'>位</span>
@@ -158,47 +127,21 @@ const Union = (props) => {
               </Button>
             <Button color='warning' size='small' fill='solid'    onClick={() => {
                            setLotteryArr([])
-                           setStepperValue(1)
-                          }}>清除</Button>
+                setStepperValue(1)
+                if (props.value==='union') {
+                  props.setRedDouble(6)
+                  props.setBlueDouble(1)
+                }else  if (props.value==='lotto') {
+                  props.setRedDouble(5)
+                  props.setBlueDouble(2)
+                }
+           }}>清除</Button>
           </div>
           </div>
-          <div className={ cla('double-main')}>
-            {lotteryArr.length>0 && lotteryArr.map((item,index) => { 
-                  return ( 
-                    <List.Item key={`${index}index`}>
-                      {/* <div className='lottery-index'>{index+1 }.</div> */}
-                      <div>
-                        <div className={ cla('title-text')}>红区:</div>
-                        <ul className={cla('double-red-item')}>
-                          {item.red.length>0 && item.red.map((items,indexs) => {
-                            return (
-                              <li className={cla('lotteryNumContainer')} key={indexs+'index'}>
-                              <img src={redCircle} alt="" />
-                                <div className={ cla("lotteryNum")}>{ items}</div>
-                              </li>
-                            )
-                          }) }
-              
-                      </ul>
-                        <div className={ cla('title-text')}>篮区:</div>
-                        <ul className={cla('double-blue-item')}>
-                        { item.blue.length > 0 && item.blue.map((items, indexs) => {
-                            return (
-                              <li className={cla('lotteryNumContainer')} key={`${indexs}${items}`}>
-                              <img src={ blueCircle} alt="" />
-                                <div className={cla("lotteryNum") }>{ items}</div>
-                          </li>
-                            )
-                          })
-                      }
-                    </ul>
-                     </div>
-                  </List.Item>
-                  )
-                })}
-          </div>
+          <DoubleModule lotteryArr={ lotteryArr}/>
       </div>
       }
+
 </div>
   )
 }
